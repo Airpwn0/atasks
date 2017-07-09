@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e1afb96f-31cb-4ef3-b2e5-4edcbdcd7448" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/firstTask/TodoMvcTest1.java" afterPath="$PROJECT_DIR$/src/test/java/firstTask/TodoMvcTest1.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -603,7 +602,14 @@
       <option name="project" value="LOCAL" />
       <updated>1499201905420</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="second task">
+      <created>1499638169998</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1499638169998</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TestHistory">
