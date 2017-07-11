@@ -10,7 +10,7 @@ import static com.codeborne.selenide.CollectionCondition.*;
 /**
  * Second task with CRUD tests.
  */
-public class MvcTest2 {
+public class TodoMvcTest2 {
 
 
 
@@ -25,6 +25,9 @@ public class MvcTest2 {
         $("#new-todo").setValue("c").pressEnter();
         $("#new-todo").setValue("d").pressEnter();
         $$("#todo-list>li").shouldHave(exactTexts("a", "b", "c", "d"));
+
+        //counter = 4
+        $("#todo-count>*").shouldHave(exactText("4"));
 
         //complete
         $$("#todo-list>li").findBy(exactText("b")).find(".toggle").click();
@@ -62,6 +65,9 @@ public class MvcTest2 {
         $("#toggle-all").click();
         $$("#todo-list>li").filterBy(cssClass("completed")).shouldHave(exactTexts("c", "d"));
 
+        //counter = 0
+        $("#todo-count>*").shouldHave(exactText("0"));
+
         //clear all completed
         $("#clear-completed").click();
         $("#todo-list").shouldNotBe(visible);
@@ -72,6 +78,7 @@ public class MvcTest2 {
         $("#todo-list>li").shouldHave(exactText("a")).shouldBe(visible);
         $("#todo-list>li").shouldHave(exactText("c")).shouldBe(visible);
         */
+        //$("#todo-count").shouldHave(exactText("0"));
     }
 
 }
