@@ -10,9 +10,8 @@ import static com.codeborne.selenide.CollectionCondition.*;
 /**
  * Second task with CRUD tests.
  */
+
 public class TodoMvcTest2 {
-
-
 
     @Test
     public void e2e() {
@@ -26,15 +25,31 @@ public class TodoMvcTest2 {
         $("#new-todo").setValue("d").pressEnter();
         $$("#todo-list>li").shouldHave(exactTexts("a", "b", "c", "d"));
 
-        //counter = 4
+        //(optional) counter = 4
         $("#todo-count>*").shouldHave(exactText("4"));
+
+        //(optional) filter 'Active'
+        $$("#filters>li").findBy(exactText("Active")).click();
+        $("#todo-list").shouldHave(cssClass("filter-active"));
+        $$("#todo-list>li").shouldHave(exactTexts("a", "b", "c", "d"));
+        $$("#filters>li").findBy(exactText("All")).click();
+        $("#todo-list").shouldNotHave(cssClass("filter-active"));
+        $$("#todo-list>li").shouldHave(exactTexts("a", "b", "c", "d"));
 
         //complete
         $$("#todo-list>li").findBy(exactText("b")).find(".toggle").click();
         $$("#todo-list>li").filterBy(cssClass("completed")).shouldHave(exactTexts("b"));
         $$("#todo-list>li").excludeWith(cssClass("completed")).shouldHave(exactTexts("a", "c", "d"));
 
-        //complete > active
+        //(optional) filter 'Completed'
+        $$("#filters>li").findBy(exactText("Completed")).click();
+        $("#todo-list").shouldHave(cssClass("filter-completed"));
+        $$("#todo-list>li").shouldHave(exactTexts("", "b", "", ""));
+        $$("#filters>li").findBy(exactText("All")).click();
+        $("#todo-list").shouldNotHave(cssClass("filter-completed"));
+        $$("#todo-list>li").shouldHave(exactTexts("a", "b", "c", "d"));
+
+        //completed > active
         $$("#todo-list>li").findBy(exactText("c")).find(".toggle").click();
         $$("#todo-list>li").filterBy(cssClass("completed")).shouldHave(exactTexts("b", "c"));
         $$("#todo-list>li").excludeWith(cssClass("completed")).shouldHave(exactTexts("a", "d"));
@@ -42,7 +57,7 @@ public class TodoMvcTest2 {
         $$("#todo-list>li").filterBy(cssClass("completed")).shouldHave(exactTexts("b"));
         $$("#todo-list>li").excludeWith(cssClass("completed")).shouldHave(exactTexts("a", "c", "d"));
 
-        //update complete
+        //update completed
         $$("#todo-list>li.completed").findBy(exactText("b")).doubleClick();
         $("#todo-list>li.editing").find(".edit").setValue("bb").pressEnter();
         $$("#todo-list>li").shouldHave(exactTexts("a", "bb", "c", "d"));
@@ -52,7 +67,7 @@ public class TodoMvcTest2 {
         $("#todo-list>li.editing").find(".edit").setValue("aa").pressEnter();
         $$("#todo-list>li").shouldHave(exactTexts("aa", "bb", "c","d"));
 
-        //delete complete
+        //delete completed by button
         $("#todo-list>li.completed").hover().find(".destroy").click();
         $$("#todo-list>li").shouldHave(exactTexts("aa", "c","d"));
 
@@ -65,20 +80,13 @@ public class TodoMvcTest2 {
         $("#toggle-all").click();
         $$("#todo-list>li").filterBy(cssClass("completed")).shouldHave(exactTexts("c", "d"));
 
-        //counter = 0
+        //(optional) counter = 0
         $("#todo-count>*").shouldHave(exactText("0"));
 
         //clear all completed
         $("#clear-completed").click();
         $("#todo-list").shouldNotBe(visible);
 
-        /* filter Active
-        $$("#filters>li").findBy(exactText("Active")).click();
-        $$("#todo-list>li").findBy(cssClass("completed")).shouldHave(exactText("b")).shouldBe(disappear);
-        $("#todo-list>li").shouldHave(exactText("a")).shouldBe(visible);
-        $("#todo-list>li").shouldHave(exactText("c")).shouldBe(visible);
-        */
-        //$("#todo-count").shouldHave(exactText("0"));
     }
 
 }
