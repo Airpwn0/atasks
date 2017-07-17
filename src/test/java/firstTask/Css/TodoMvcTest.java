@@ -1,9 +1,8 @@
-package firstTask;
+package firstTask.Css;
 
 import com.codeborne.selenide.SelenideElement;
 import org.junit.Test;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.CollectionCondition.*;
 

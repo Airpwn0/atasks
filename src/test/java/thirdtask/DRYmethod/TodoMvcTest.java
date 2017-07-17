@@ -1,16 +1,14 @@
-package secondtask.POCtest;
+package thirdtask.DRYmethod;
 
-import com.codeborne.selenide.Configuration;
 import org.junit.Test;
 
-import static com.codeborne.selenide.CollectionCondition.empty;
+import static com.codeborne.selenide.CollectionCondition.exactTexts;
+import static com.codeborne.selenide.Condition.cssClass;
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selectors.*;
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.CollectionCondition.*;
 
 /**
- * Second task with CRUD tests.
+ * Third task with DRY method.
  */
 
 public class TodoMvcTest {
@@ -20,9 +18,7 @@ public class TodoMvcTest {
         open("https://todomvc4tasj.herokuapp.com/");
 
         //Create
-        $("#new-todo").setValue("a").pressEnter();
-        $("#new-todo").setValue("b").pressEnter();
-        $("#new-todo").setValue("c").pressEnter();
+        add("a", "b", "c");
         $$("#todo-list>li").shouldHave(exactTexts("a", "b", "c"));
 
         //Update
@@ -43,6 +39,11 @@ public class TodoMvcTest {
         //Delete by button
         $$("#todo-list>li").findBy(exactText("b")).hover().find(".destroy").click();
         $$("#todo-list>li").shouldHave(exactTexts("c"));
+    }
+    private void add(String... s) {
+        for (String text: s) {
+            $("#new-todo").setValue(text).pressEnter();
+        }
     }
 
 }
