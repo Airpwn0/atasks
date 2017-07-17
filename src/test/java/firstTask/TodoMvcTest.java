@@ -1,5 +1,6 @@
 package firstTask;
 
+import com.codeborne.selenide.SelenideElement;
 import org.junit.Test;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selectors.*;
@@ -14,9 +15,10 @@ public class TodoMvcTest {
     @Test
     public void completeTasks() {
         open("http://todomvc.com/examples/emberjs/");
-        $("#new-todo").setValue("a").pressEnter();
-        $("#new-todo").setValue("b").pressEnter();
-        $("#new-todo").setValue("c").pressEnter();
+        SelenideElement newTodo = $("#new-todo");
+        newTodo.setValue("a").pressEnter();
+        newTodo.setValue("b").pressEnter();
+        newTodo.setValue("c").pressEnter();
         $$("#todo-list>li").shouldHave(exactTexts("a","b","c"));
 
         $("#todo-list>li:nth-child(2) .toggle").click();

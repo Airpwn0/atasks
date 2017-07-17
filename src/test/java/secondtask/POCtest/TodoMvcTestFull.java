@@ -11,10 +11,10 @@ import static com.codeborne.selenide.CollectionCondition.*;
  * Second task with CRUD tests.
  */
 
-public class TodoMvcTest2 {
+public class TodoMvcTestFull {
 
     @Test
-    public void e2e() {
+    public void tasksSecondaryFlow() {
 
         open("https://todomvc4tasj.herokuapp.com/");
 
@@ -53,12 +53,12 @@ public class TodoMvcTest2 {
         $$("#todo-list>li").findBy(exactText("c")).find(".toggle").click();
         $$("#todo-list>li").filterBy(cssClass("completed")).shouldHave(exactTexts("b", "c"));
         $$("#todo-list>li").excludeWith(cssClass("completed")).shouldHave(exactTexts("a", "d"));
-        $$("#todo-list>li.completed").findBy(exactText("c")).find(".toggle").click();
+        $$("#todo-list>li").filterBy(cssClass("completed")).findBy(exactText("c")).find(".toggle").click();
         $$("#todo-list>li").filterBy(cssClass("completed")).shouldHave(exactTexts("b"));
         $$("#todo-list>li").excludeWith(cssClass("completed")).shouldHave(exactTexts("a", "c", "d"));
 
         //update completed
-        $$("#todo-list>li.completed").findBy(exactText("b")).doubleClick();
+        $$("#todo-list>li").filterBy(cssClass("completed")).findBy(exactText("b")).doubleClick();
         $("#todo-list>li.editing").find(".edit").setValue("bb").pressEnter();
         $$("#todo-list>li").shouldHave(exactTexts("a", "bb", "c", "d"));
 
@@ -86,7 +86,6 @@ public class TodoMvcTest2 {
         //clear all completed
         $("#clear-completed").click();
         $("#todo-list").shouldNotBe(visible);
-
     }
 
 }
