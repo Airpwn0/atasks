@@ -1,5 +1,7 @@
 package thirdtask.DRYmethod;
 
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import org.junit.Test;
 
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
@@ -19,31 +21,43 @@ public class TodoMvcTest {
 
         //Create
         add("a", "b", "c");
-        $$("#todo-list>li").shouldHave(exactTexts("a", "b", "c"));
+        assertTodoList("a", "b", "c");
 
-        //Update
-        $$("#todo-list>li").findBy(exactText("a")).doubleClick();
-        $$("#todo-list>li").findBy(cssClass("editing")).find(".edit")
+        //Edit
+        activateInput("a");
+        todoList.findBy(cssClass("editing")).find(".edit")
                 .setValue("a edited").pressEnter();
 
         //Complete and Clear
-        $$("#todo-list>li").findBy(exactText("a edited")).find(".toggle").click();
-        $("#clear-completed").click();
-        $$("#todo-list>li").shouldHave(exactTexts("b", "c"));
+        todoList.findBy(exactText("a edited")).find(".toggle").click();
+        clearButton.click();
+        assertTodoList("b", "c");
 
         //Cancel edit
-        $$("#todo-list>li").findBy(exactText("b")).doubleClick();
-        $$("#todo-list>li").findBy(cssClass("editing")).find(".edit")
+        activateInput("b");
+        todoList.findBy(cssClass("editing")).find(".edit")
                 .setValue("will be canceled").pressEscape();
 
         //Delete by button
-        $$("#todo-list>li").findBy(exactText("b")).hover().find(".destroy").click();
-        $$("#todo-list>li").shouldHave(exactTexts("c"));
+        todoList.findBy(exactText("b")).hover().find(".destroy").click();
+        assertTodoList("c");
+
     }
+    ElementsCollection todoList = $$("#todo-list>li");
+    SelenideElement clearButton = $("#clear-completed");
+
     private void add(String... s) {
         for (String text: s) {
             $("#new-todo").setValue(text).pressEnter();
         }
     }
 
+    private void assertTodoList(String... s) {
+        for (String text: s) {
+            todoList.shouldHave(exactTexts(text));
+        }
+    }
+    private void activateInput(String text) {
+        todoList.findBy(exactText(text)).doubleClick();
+    }
 }

@@ -17,6 +17,7 @@ import static com.codeborne.selenide.Selenide.open;
 
         @Test
         public void tasksMainFlow() {
+
             openMainPage();
 
             add("a", "b", "c");
@@ -28,7 +29,7 @@ import static com.codeborne.selenide.Selenide.open;
             clear();
             assertTodoList("a","c");
 
-            cancelEdit("a");
+            cancelEdit("a", "text will be canceled");
 
             delete("a");
             assertTodoList("c");
@@ -57,10 +58,10 @@ import static com.codeborne.selenide.Selenide.open;
         private void clear() {
             $("#clear-completed").click();
         }
-        private void cancelEdit(String arg) {
-            $$("#todo-list>li").findBy(exactText(arg)).doubleClick();
+        private void cancelEdit(String text, String arg) {
+            $$("#todo-list>li").findBy(exactText(text)).doubleClick();
             $$("#todo-list>li").findBy(cssClass("editing")).find(".edit")
-                    .setValue("will be canceled").pressEscape();
+                    .setValue(arg).pressEscape();
         }
         private void delete(String arg) {
             $$("#todo-list>li").findBy(exactText(arg)).hover().find(".destroy").click();
