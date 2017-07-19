@@ -38,33 +38,32 @@ import static com.codeborne.selenide.Selenide.open;
         private void openMainPage() {
             open ("https://todomvc4tasj.herokuapp.com/");
         }
-
         private void add(String... taskText) {
             for (String text: taskText) {
                 $("#new-todo").setValue(text).pressEnter();
             }
         }
-        private void assertTodoList(String... text) {
-            $$("#todo-list>li").shouldHave(exactTexts(text));
+        private void assertTodoList(String... taskText) {
+            $$("#todo-list>li").shouldHave(exactTexts(taskText));
         }
-        private void update(String text, String arg) {
-            $$("#todo-list>li").findBy(exactText(text)).doubleClick();
+        private void update(String taskText, String arg) {
+            $$("#todo-list>li").findBy(exactText(taskText)).doubleClick();
             $$("#todo-list>li").findBy(cssClass("editing")).find(".edit")
                                             .setValue(arg).pressEnter();
         }
-        private void complete(String arg) {
-            $$("#todo-list>li").findBy(exactText(arg)).find(".toggle").click();
+        private void complete(String taskText) {
+            $$("#todo-list>li").findBy(exactText(taskText)).find(".toggle").click();
         }
         private void clear() {
             $("#clear-completed").click();
         }
-        private void cancelEdit(String text, String arg) {
-            $$("#todo-list>li").findBy(exactText(text)).doubleClick();
+        private void cancelEdit(String taskText, String arg) {
+            $$("#todo-list>li").findBy(exactText(taskText)).doubleClick();
             $$("#todo-list>li").findBy(cssClass("editing")).find(".edit")
                     .setValue(arg).pressEscape();
         }
-        private void delete(String arg) {
-            $$("#todo-list>li").findBy(exactText(arg)).hover().find(".destroy").click();
+        private void delete(String taskText) {
+            $$("#todo-list>li").findBy(exactText(taskText)).hover().find(".destroy").click();
         }
 
     }

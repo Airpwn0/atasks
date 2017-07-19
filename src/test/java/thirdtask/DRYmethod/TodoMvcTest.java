@@ -25,39 +25,41 @@ public class TodoMvcTest {
 
         //Edit
         activateInput("a");
-        todoList.findBy(cssClass("editing")).find(".edit")
-                .setValue("a edited").pressEnter();
+        inputArea.setValue("a edited").pressEnter();
 
         //Complete and Clear
-        todoList.findBy(exactText("a edited")).find(".toggle").click();
-        clearButton.click();
+        searchTask("a edited").find(".toggle").click();
+        $("#clear-completed").click();
         assertTodoList("b", "c");
 
         //Cancel edit
         activateInput("b");
-        todoList.findBy(cssClass("editing")).find(".edit")
-                .setValue("will be canceled").pressEscape();
+        inputArea.setValue("will be canceled").pressEscape();
 
         //Delete by button
-        todoList.findBy(exactText("b")).hover().find(".destroy").click();
+        searchTask("b").hover().find(".destroy").click();
         assertTodoList("c");
 
     }
-    ElementsCollection todoList = $$("#todo-list>li");
-    SelenideElement clearButton = $("#clear-completed");
+    private ElementsCollection todoList = $$("#todo-list>li");
 
-    private void add(String... s) {
-        for (String text: s) {
+    private SelenideElement inputArea = todoList.findBy(cssClass("editing")).find(".edit");
+
+    private void add(String... taskText) {
+        for (String text: taskText) {
             $("#new-todo").setValue(text).pressEnter();
         }
     }
 
-    private void assertTodoList(String... s) {
-        for (String text: s) {
-            todoList.shouldHave(exactTexts(text));
-        }
+    private SelenideElement searchTask(String taskText) {
+        return todoList.findBy(exactText(taskText));
     }
-    private void activateInput(String text) {
-        todoList.findBy(exactText(text)).doubleClick();
+
+    private void assertTodoList(String... taskText) {
+        todoList.shouldHave(exactTexts(taskText));
+        }
+
+    private void activateInput(String taskText) {
+        todoList.findBy(exactText(taskText)).doubleClick();
     }
 }
