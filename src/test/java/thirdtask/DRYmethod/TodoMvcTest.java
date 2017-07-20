@@ -17,33 +17,30 @@ public class TodoMvcTest {
 
     @Test
     public void tasksMainFlow() {
+
         open("https://todomvc4tasj.herokuapp.com/");
 
         //Create
         add("a", "b", "c");
-        assertTodoList("a", "b", "c");
+        assertList("a", "b", "c");
 
         //Edit
-        activateInput("a");
-        inputArea.setValue("a edited").pressEnter();
+        edit("a", "a edited").pressEnter();
 
         //Complete and Clear
-        searchTask("a edited").find(".toggle").click();
+        task("a edited").find(".toggle").click();
         $("#clear-completed").click();
-        assertTodoList("b", "c");
+        assertList("b", "c");
 
         //Cancel edit
-        activateInput("b");
-        inputArea.setValue("will be canceled").pressEscape();
+        edit("b", "will be canceled").pressEscape();
 
         //Delete by button
-        searchTask("b").hover().find(".destroy").click();
-        assertTodoList("c");
+        task("b").hover().find(".destroy").click();
+        assertList("c");
 
     }
-    private ElementsCollection todoList = $$("#todo-list>li");
-
-    private SelenideElement inputArea = todoList.findBy(cssClass("editing")).find(".edit");
+    private ElementsCollection list = $$("#todo-list>li");
 
     private void add(String... taskText) {
         for (String text: taskText) {
@@ -51,15 +48,18 @@ public class TodoMvcTest {
         }
     }
 
-    private SelenideElement searchTask(String taskText) {
-        return todoList.findBy(exactText(taskText));
+    private SelenideElement task(String taskText) {
+        return list.findBy(exactText(taskText));
     }
 
-    private void assertTodoList(String... taskText) {
-        todoList.shouldHave(exactTexts(taskText));
+    private void assertList(String... taskText) {
+        list.shouldHave(exactTexts(taskText));
         }
 
-    private void activateInput(String taskText) {
-        todoList.findBy(exactText(taskText)).doubleClick();
+    private SelenideElement edit(String taskText, String arg) {
+        list.findBy(exactText(taskText)).doubleClick();
+        return list.findBy(cssClass("editing")).find(".edit").setValue(arg);
+
     }
+
 }

@@ -29,6 +29,7 @@ public class TodoMvcTest {
 
         driver.get("https://todomvc4tasj.herokuapp.com/");
         driver.findElement(By.id("new-todo")).sendKeys("a" + "\n");
+
         driver.findElement(By.id("new-todo")).sendKeys("b" + "\n");
     }
 

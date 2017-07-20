@@ -21,18 +21,18 @@ import static com.codeborne.selenide.Selenide.open;
             openMainPage();
 
             add("a", "b", "c");
-            assertTodoList("a", "b", "c");
+            assertList("a", "b", "c");
 
             update("b", "b edited");
 
             complete("b edited");
             clear();
-            assertTodoList("a","c");
+            assertList("a","c");
 
             cancelEdit("a", "text will be canceled");
 
             delete("a");
-            assertTodoList("c");
+            assertList("c");
         }
 
         private void openMainPage() {
@@ -43,7 +43,7 @@ import static com.codeborne.selenide.Selenide.open;
                 $("#new-todo").setValue(text).pressEnter();
             }
         }
-        private void assertTodoList(String... taskText) {
+        private void assertList(String... taskText) {
             $$("#todo-list>li").shouldHave(exactTexts(taskText));
         }
         private void update(String taskText, String arg) {
