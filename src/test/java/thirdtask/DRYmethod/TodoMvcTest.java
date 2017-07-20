@@ -22,22 +22,22 @@ public class TodoMvcTest {
 
         //Create
         add("a", "b", "c");
-        assertList("a", "b", "c");
+        assertTasks("a", "b", "c");
 
         //Edit
-        edit("a", "a edited").pressEnter();
+        startEdit("a", "a edited").pressEnter();
 
         //Complete and Clear
         task("a edited").find(".toggle").click();
         $("#clear-completed").click();
-        assertList("b", "c");
+        assertTasks("b", "c");
 
         //Cancel edit
-        edit("b", "will be canceled").pressEscape();
+        startEdit("b", "will be canceled").pressEscape();
 
         //Delete by button
         task("b").hover().find(".destroy").click();
-        assertList("c");
+        assertTasks("c");
 
     }
     private ElementsCollection list = $$("#todo-list>li");
@@ -52,14 +52,13 @@ public class TodoMvcTest {
         return list.findBy(exactText(taskText));
     }
 
-    private void assertList(String... taskText) {
+    private void assertTasks(String... taskText) {
         list.shouldHave(exactTexts(taskText));
         }
 
-    private SelenideElement edit(String taskText, String arg) {
+    private SelenideElement startEdit(String taskText, String arg) {
         list.findBy(exactText(taskText)).doubleClick();
         return list.findBy(cssClass("editing")).find(".edit").setValue(arg);
-
     }
 
 }

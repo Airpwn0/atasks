@@ -21,8 +21,8 @@ public class TodoMvcTest {
         $$x("//*[@id='todo-list']//li").shouldHave(exactTexts("a", "b", "c"));
 
         //$x("//*[@id='todo-list']//li[.//*text()='b']//*[@class='toggle']").click();
-        $x("//*[@id='todo-list']//li[.//text()='b']//*[@class='toggle']").click();
+        $(byXpath("//*[@id='todo-list']//li[.//text()='b']//*[@class='toggle']")).click();
         $x("//*[@id='todo-list']//li[contains(@class, 'completed')]").shouldHave(exactText("b"));
-        $$x("//*[@id='todo-list']//li[not(contains (@class, 'completed'))]").shouldHave(exactTexts("a", "c"));
+        $$x("//*[@id='todo-list']//li[contains (@class, 'active')]").shouldHave(exactTexts("a", "c"));
     }
 }
