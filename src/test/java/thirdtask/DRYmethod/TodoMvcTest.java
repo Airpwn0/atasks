@@ -52,8 +52,8 @@ public class TodoMvcTest {
         return list.findBy(exactText(taskText));
     }
 
-    private void assertTasks(String... taskText) {
-        list.shouldHave(exactTexts(taskText));
+    private void assertTasks(String... tasksText) {
+        list.shouldHave(exactTexts(tasksText));
         }
 
     private SelenideElement startEdit(String taskText, String arg) {

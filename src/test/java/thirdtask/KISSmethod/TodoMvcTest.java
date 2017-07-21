@@ -1,32 +1,32 @@
 package thirdtask.KISSmethod;
 
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import org.junit.Test;
 
 import static com.codeborne.selenide.CollectionCondition.exactTexts;
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
-    /**
-     * Third task with KISS method.
-     */
+/**
+ * Third task with KISS method.
+ */
 
     public class TodoMvcTest {
 
-        @Test
-        public void tasksMainFlow() {
+    @Test
+    public void tasksMainFlow() {
 
-            openMainPage();
+        openMainPage();
 
             add("a", "b", "c");
             assertTasks("a", "b", "c");
 
             edit("b", "b edited");
 
-            complete("b edited");
-            clear();
+            completeTask("b edited");
+            clearCompleted();
             assertTasks("a","c");
 
             cancelEdit("a", "text will be canceled");
@@ -34,6 +34,8 @@ import static com.codeborne.selenide.Selenide.open;
             delete("a");
             assertTasks("c");
         }
+
+        private ElementsCollection list = $$("#todo-list>li");
 
         private void openMainPage() {
             open ("https://todomvc4tasj.herokuapp.com/");
@@ -45,32 +47,33 @@ import static com.codeborne.selenide.Selenide.open;
             }
         }
 
-        private void assertTasks(String... taskText) {
-            $$("#todo-list>li").shouldHave(exactTexts(taskText));
+        private void assertTasks(String... tasksText) {
+            list.shouldHave(exactTexts(tasksText));
+        }
+
+        private SelenideElement startEdit(String taskText, String arg) {
+            list.findBy(exactText(taskText)).doubleClick();
+            return list.findBy(cssClass("editing")).find(".edit").setValue(arg);
         }
 
         private void edit(String taskText, String arg) {
-            $$("#todo-list>li").findBy(exactText(taskText)).doubleClick();
-            $$("#todo-list>li").findBy(cssClass("editing")).find(".edit")
-                                            .setValue(arg).pressEnter();
-        }
-
-        private void complete(String taskText) {
-            $$("#todo-list>li").findBy(exactText(taskText)).find(".toggle").click();
-        }
-
-        private void clear() {
-            $("#clear-completed").click();
+            startEdit(taskText, arg).pressEnter();
         }
 
         private void cancelEdit(String taskText, String arg) {
-            $$("#todo-list>li").findBy(exactText(taskText)).doubleClick();
-            $$("#todo-list>li").findBy(cssClass("editing")).find(".edit")
-                    .setValue(arg).pressEscape();
+            startEdit(taskText, arg).pressEscape();
+        }
+
+        private void completeTask(String taskText) {
+            list.findBy(exactText(taskText)).find(".toggle").click();
+        }
+
+        private void clearCompleted() {
+            $("#clear-completed").click();
         }
 
         private void delete(String taskText) {
-            $$("#todo-list>li").findBy(exactText(taskText)).hover().find(".destroy").click();
+            list.findBy(exactText(taskText)).hover().find(".destroy").click();
         }
     }
 
