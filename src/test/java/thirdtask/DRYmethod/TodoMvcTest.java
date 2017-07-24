@@ -40,10 +40,11 @@ public class TodoMvcTest {
         assertTasks("c");
 
     }
+
     private ElementsCollection list = $$("#todo-list>li");
 
     private void add(String... taskText) {
-        for (String text: taskText) {
+        for (String text : taskText) {
             $("#new-todo").setValue(text).pressEnter();
         }
     }
@@ -54,7 +55,7 @@ public class TodoMvcTest {
 
     private void assertTasks(String... tasksText) {
         list.shouldHave(exactTexts(tasksText));
-        }
+    }
 
     private SelenideElement startEdit(String taskText, String arg) {
         list.findBy(exactText(taskText)).doubleClick();
